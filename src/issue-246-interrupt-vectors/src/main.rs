@@ -3,6 +3,9 @@
 
 use cortex_m_rt::entry;
 use panic_halt as _;
+// Just use the HAL for pulling in its interrupt vectors (and may be some other
+// fairy dust).
+use stm32f3xx_hal as _;
 
 #[entry]
 fn main() -> ! {
