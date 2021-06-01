@@ -1,0 +1,11 @@
+[package]
+authors = ["Christian Meusel <christian.meusel@posteo.de>"]
+edition = "2018"
+name = "interrupt-vectors"
+version = "0.1.0"
+
+[dependencies]
+cortex-m = "0.7.2"
+cortex-m-rt = { version = "0.6.13", features = ["device"] }
+panic-halt = "0.2.0"
+stm32f3xx-hal = { version = "0.6.1", features = ["rt", "stm32f303xc"] }

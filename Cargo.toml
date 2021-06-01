@@ -9,6 +9,7 @@ members = [
   "src/14-i2c",
   "src/15-led-compass",
   "src/16-punch-o-meter",
+  "src/issue-246-interrupt-vectors",
 ]
 
 [profile.release]
