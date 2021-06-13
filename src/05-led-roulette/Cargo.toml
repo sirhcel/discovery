@@ -10,3 +10,19 @@ version = "0.2.0"
 
 [dependencies]
 aux5 = { path = "auxiliary" }
+defmt = "0.2.2"
+
+[features]
+# set logging levels here
+default = [
+  "defmt-default",
+  # "stm32f3xx-hal/defmt-trace",
+]
+
+# do NOT modify these features
+defmt-default = []
+defmt-trace = []
+defmt-debug = []
+defmt-info = []
+defmt-warn = []
+defmt-error = []

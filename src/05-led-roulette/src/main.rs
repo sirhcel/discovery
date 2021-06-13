@@ -10,6 +10,8 @@ fn main() -> ! {
     let x = 42;
     _y = x;
 
-    // infinite loop; just so we don't leave this stack frame
-    loop {}
+    defmt::info!("Greetrings from 05-led-roulette!");
+
+    // Gracefully terminate the application and make `probe-run` exit.
+    aux5::exit();
 }

@@ -2,13 +2,15 @@
 
 #![no_std]
 
-pub use panic_itm; // panic handler
-
 pub use cortex_m_rt::entry;
 
 pub use stm32f3_discovery::{leds::Leds, stm32f3xx_hal, switch_hal};
 pub use switch_hal::{ActiveHigh, OutputSwitch, Switch, ToggleableOutputSwitch};
 
+use defmt_rtt as _;
+use panic_probe as _;
+
+use core::sync::atomic::{AtomicUsize, Ordering};
 use stm32f3xx_hal::prelude::*;
 pub use stm32f3xx_hal::{
     delay::Delay,
@@ -45,3 +47,25 @@ pub fn init() -> (Delay, LedArray) {
 
     (delay, leds.into_array())
 }
+
+/// Terminates the application and makes `probe-run` exit with exit-code = 0
+pub fn exit() -> ! {
+    loop {
+        cortex_m::asm::bkpt();
+    }
+}
+
+// same panicking *behavior* as `panic-probe` but doesn't print a panic message
+// this prevents the panic message being printed *twice* when `defmt::panic` is invoked
+#[defmt::panic_handler]
+fn panic() -> ! {
+    cortex_m::asm::udf()
+}
+
+static COUNT: AtomicUsize = AtomicUsize::new(0);
+defmt::timestamp!("{=usize}", {
+    // NOTE(no-CAS) `timestamps` runs with interrupts disabled
+    let n = COUNT.load(Ordering::Relaxed);
+    COUNT.store(n + 1, Ordering::Relaxed);
+    n
+});
